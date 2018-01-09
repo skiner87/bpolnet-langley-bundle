@@ -37,7 +37,7 @@ class LangleyDumpCommand extends Command
     {
         $this
             ->setName('langley:dump')
-            ->addArgument('locales', InputArgument::IS_ARRAY, 'Locales which you are using in your application in ISO 639-1 format (2 chars). Ex: en,fr')
+            ->addArgument('locales', InputArgument::REQUIRED, 'Locales which you are using in your application in ISO 639-1 format (2 chars). Ex: en,fr')
         ;
     }
 
@@ -46,7 +46,7 @@ class LangleyDumpCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $locales = $input->getArgument('locales');
+        $locales = explode(',', $input->getArgument('locales'));
 
         $javascript = [];
 
@@ -77,7 +77,16 @@ class LangleyDumpCommand extends Command
                     }
                 }
 
-                file_put_contents($this->langley->getTranslationsFullPath() . '/messages.' . $locale . '.php', "<?php\n\nreturn " . var_export($dump, 1) . ';');
+                $file = $this->langley->getTranslationsFullPath() . '/messages.' . $locale . '.php';
+
+                if (file_put_contents($file, "<?php\n\nreturn " . var_export($dump, 1) . ';'))
+                {
+                    $output->writeln('<info>' . $file . ' saved</info>');
+                }
+                else
+                {
+                    $output->writeln('<error>' . $file . ' failed</error>');
+                }
 
                 $output->writeln(sprintf('Saving'));
             }
@@ -98,14 +107,16 @@ class LangleyDumpCommand extends Command
      */
     private function saveJsTranslations(OutputInterface $output, array $javascript)
     {
-        $jsTranslations = '';
+        $jsTranslations = 'var Trans = {};';
 
         foreach ($javascript as $locale => $items)
         {
-            $jsTranslations .= 'Translations.' . strtolower($locale) . '=' . json_encode($items, JSON_UNESCAPED_UNICODE) . ';';
+            $jsTranslations .= 'Trans.' . strtolower($locale) . '=' . json_encode($items, JSON_UNESCAPED_UNICODE) . ';';
         }
 
         $filePath = $this->langley->getTranslationsFullJsPath() . '/' . $this->langley->getTranslationsJsFile();
+
+        $output->writeln('Javascripts translations');
 
         if (file_put_contents($filePath, $jsTranslations))
         {
