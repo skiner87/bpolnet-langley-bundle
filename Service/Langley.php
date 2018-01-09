@@ -41,12 +41,12 @@ class Langley
 
     public function getTranslationsFullPath()
     {
-        return $this->kernel->getRootDir() . '/' . $this->config['translationsPath'];
+        return $this->config['translationsPath'];
     }
 
     public function getTranslationsFullJsPath()
     {
-        return $this->kernel->getRootDir() . '/' . $this->config['translationsJsPath'];
+        return $this->config['translationsJsPath'];
     }
 
     public function getTranslationsJsFile()
