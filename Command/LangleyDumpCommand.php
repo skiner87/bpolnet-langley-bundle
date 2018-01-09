@@ -77,7 +77,7 @@ class LangleyDumpCommand extends Command
                     }
                 }
 
-                $file = $this->langley->getTranslationsFullPath() . '/messages.' . $locale . '.php';
+                $file = realpath($this->langley->getTranslationsFullPath() . '/messages.' . $locale . '.php');
 
                 if (file_put_contents($file, "<?php\n\nreturn " . var_export($dump, 1) . ';'))
                 {
@@ -87,8 +87,6 @@ class LangleyDumpCommand extends Command
                 {
                     $output->writeln('<error>' . $file . ' failed</error>');
                 }
-
-                $output->writeln(sprintf('Saving'));
             }
             else
             {
@@ -114,7 +112,7 @@ class LangleyDumpCommand extends Command
             $jsTranslations .= 'Trans.' . strtolower($locale) . '=' . json_encode($items, JSON_UNESCAPED_UNICODE) . ';';
         }
 
-        $filePath = $this->langley->getTranslationsFullJsPath() . '/' . $this->langley->getTranslationsJsFile();
+        $filePath = realpath($this->langley->getTranslationsFullJsPath() . '/' . $this->langley->getTranslationsJsFile());
 
         $output->writeln('Javascripts translations');
 
