@@ -1,0 +1,40 @@
+{
+  "name": "bpolnet/langley-bundle",
+  "version": "1.0",
+  "type": "symfony-bundle",
+  "keywords": [
+    "translations",
+    "langley",
+    "locales"
+  ],
+  "require": {
+    "php": "^7.1",
+    "symfony/config": "^3.4|^4.0",
+    "symfony/console": "^3.4|^4.0",
+    "symfony/dependency-injection": "^3.4|^4.0",
+    "symfony/filesystem": "^3.4|^4.0",
+    "symfony/framework-bundle": "^3.4|^4.0",
+    "symfony/http-kernel": "^3.4|^4.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.8",
+    "symfony/phpunit-bridge": "^3.4|^4.0",
+    "symfony/process": "^3.4|^4.0"
+  },
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "BpolNet\\Bundle\\LangleyBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BpolNet\\Bundle\\LangleyBundle\\Tests\\": "tests/"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+services:
+    BpolNet\Bundle\LangleyBundle\Command\LangleyDumpCommand:
+        public: true
+        arguments:
+            - '@BpolNet\Bundle\LangleyBundle\Service\Langley'
+        tags:
+            - { name: 'console.command', command: 'langley:dump' }
+
+    BpolNet\Bundle\LangleyBundle\Service\Langley:
+        autowire: false
+        arguments:
+            - '@?'
+            - '@kernel'
