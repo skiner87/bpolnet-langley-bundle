@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BpolNet\\Bundle\\LangleyBundle\\": ""
+      "BpolNet\\Bundle\\LangleyBundle\\": "src/"
     }
   },
   "autoload-dev": {
