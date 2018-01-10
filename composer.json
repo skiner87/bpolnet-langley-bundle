@@ -1,6 +1,5 @@
 {
   "name": "bpolnet/langley-bundle",
-  "version": "1.0.0",
   "type": "symfony-bundle",
   "keywords": [
     "translations",
