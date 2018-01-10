@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is part of the BpolNet company package.
+ *
+ * Marek Krokwa <marek.krokwa@bpol.net>
+ */
+
 namespace BpolNet\Bundle\LangleyBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;

@@ -1,9 +1,9 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: skiner
- * Date: 05.01.18
- * Time: 15:50
+ * This file is part of the BpolNet company package.
+ *
+ * Marek Krokwa <marek.krokwa@bpol.net>
  */
 
 namespace BpolNet\Bundle\LangleyBundle\Service;
