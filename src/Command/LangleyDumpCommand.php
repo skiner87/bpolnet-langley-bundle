@@ -77,15 +77,15 @@ class LangleyDumpCommand extends Command
                     }
                 }
 
-                $file = realpath($this->langley->getTranslationsFullPath() . '/messages.' . $locale . '.php');
+                $file = realpath($this->langley->getTranslationsFullPath() );
 
-                if (file_put_contents($file, "<?php\n\nreturn " . var_export($dump, 1) . ';'))
+                if (file_put_contents($file . '/messages.' . $locale . '.php', "<?php\n\nreturn " . var_export($dump, 1) . ';'))
                 {
-                    $output->writeln('<info>' . $file . ' saved</info>');
+                    $output->writeln('<info> ✔ ' . $file . '</info>');
                 }
                 else
                 {
-                    $output->writeln('<error>' . $file . ' failed</error>');
+                    $output->writeln('<error> ✘ ' . $file . ' failed</error>');
                 }
             }
             else
@@ -105,24 +105,22 @@ class LangleyDumpCommand extends Command
      */
     private function saveJsTranslations(OutputInterface $output, array $javascript)
     {
-        $jsTranslations = 'var Trans = {};';
+        $jsTranslations = 'var ' . $this->langley->getVariableJsObjectName() . ' = {};';
 
         foreach ($javascript as $locale => $items)
         {
-            $jsTranslations .= 'Trans.' . strtolower($locale) . '=' . json_encode($items, JSON_UNESCAPED_UNICODE) . ';';
+            $jsTranslations .= $this->langley->getVariableJsObjectName() . '.' . strtolower($locale) . '=' . json_encode($items, JSON_UNESCAPED_UNICODE) . ';';
         }
 
-        $filePath = realpath($this->langley->getTranslationsFullJsPath() . '/' . $this->langley->getTranslationsJsFile());
-
-        $output->writeln('Javascripts translations');
+        $filePath = realpath($this->langley->getTranslationsFullJsPath()) . '/' . $this->langley->getTranslationsJsFile();
 
         if (file_put_contents($filePath, $jsTranslations))
         {
-            $output->writeln('<info>' . $filePath . ' saved</info>');
+            $output->writeln('<info> ✔ ' . $filePath . '</info>');
         }
         else
         {
-            $output->writeln('<error>' . $filePath . ' failed</error>');
+            $output->writeln('<error> ✘ ' . $filePath . ' failed</error>');
         }
     }
 

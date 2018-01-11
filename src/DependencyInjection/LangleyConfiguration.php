@@ -8,6 +8,7 @@
 
 namespace BpolNet\Bundle\LangleyBundle\DependencyInjection;
 
+use BpolNet\Bundle\LangleyBundle\Exception\LangleyException;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -29,15 +30,51 @@ class LangleyConfiguration implements ConfigurationInterface
         /** @noinspection PhpUndefinedMethodInspection */
         $rootNode
             ->children()
-                ->scalarNode('secret')->isRequired()->end()
-                ->scalarNode('translationsPath')->isRequired()->defaultValue('translations')->end()
-                ->scalarNode('translationsJsPath')->isRequired()->defaultValue('assets/js')->end()
-                ->scalarNode('translationsJsFile')->isRequired()->defaultValue('030.Lang.js')->end()
+                ->scalarNode('secret')
+                    ->isRequired()
+                ->end()
+                ->scalarNode('translationsPath')
+                    ->isRequired()
+                    ->defaultValue('%kernel.root_dir%/translations')
+                    ->validate()
+                    ->ifString()
+                        ->then(function($value)
+                        {
+                            if (!is_dir($value))
+                            {
+                                throw new LangleyException(sprintf('Translations directory is not readable (%s)', $value));
+                            }
+
+                            return $value;
+                        })
+                    ->end()
+                ->end()
+                ->scalarNode('translationsJsPath')
+                    ->isRequired()
+                    ->defaultValue('%kernel.root_dir%/assets/js')
+                    ->validate()
+                    ->ifString()
+                        ->then(function($value)
+                        {
+                            if (!is_dir($value))
+                            {
+                                throw new LangleyException(sprintf('Translations directory is not readable (%s)', $value));
+                            }
+
+                            return $value;
+                        })
+                    ->end()
+                ->end()
+                ->scalarNode('translationsJsFile')
+                    ->isRequired()
+                    ->defaultValue('030.Lang.js')
+                ->end()
+                ->scalarNode('variableJsObject')
+                    ->defaultValue('Trans')
+                    ->info('Name of variable which will be used in javascript. Ex. `Trans` => var Trans.en = {}')
+                ->end()
             ->end()
         ;
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
 
         return $treeBuilder;
     }

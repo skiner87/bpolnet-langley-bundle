@@ -34,24 +34,41 @@ class Langley
     /**
      * @return string
      */
-    private function getSecretKey()
+    private function getSecretKey() : string
     {
         return $this->config['secret'];
     }
 
-    public function getTranslationsFullPath()
+    /**
+     * @return string
+     */
+    public function getTranslationsFullPath() : string
     {
         return $this->config['translationsPath'];
     }
 
-    public function getTranslationsFullJsPath()
+    /**
+     * @return string
+     */
+    public function getTranslationsFullJsPath() : string
     {
         return $this->config['translationsJsPath'];
     }
 
-    public function getTranslationsJsFile()
+    /**
+     * @return string
+     */
+    public function getTranslationsJsFile() : string
     {
         return $this->config['translationsJsFile'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariableJsObjectName() : string
+    {
+        return $this->config['variableJsObject'];
     }
 
     /**
