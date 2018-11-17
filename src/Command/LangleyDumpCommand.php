@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class LangleyDumpCommand extends Command
 {
 
+    const ARGUMENT_LOCALES = 'locales';
+
     /**
      * @var Langley
      */
@@ -37,7 +39,7 @@ class LangleyDumpCommand extends Command
     {
         $this
             ->setName('langley:dump')
-            ->addArgument('locales', InputArgument::REQUIRED, 'Locales which you are using in your application in ISO 639-1 format (2 chars). Ex: en,fr')
+            ->addArgument(self::ARGUMENT_LOCALES, InputArgument::REQUIRED, 'Locales which you are using in your application in ISO 639-1 format (2 chars). Ex: en,fr')
         ;
     }
 
@@ -46,50 +48,49 @@ class LangleyDumpCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $locales = explode(',', $input->getArgument('locales'));
+        $locales = explode(',', $input->getArgument(self::ARGUMENT_LOCALES));
 
         $javascript = [];
 
-        foreach ($locales as $locale)
-        {
+        foreach ($locales as $locale) {
             $output->writeln(sprintf('Fetching locale %s', $locale));
             $translations = $this->langley->fetchTranslations($locale);
 
-            if (is_array($translations) && 0 != sizeof($translations))
-            {
-                $dump = [];
+            $catalogues = [
+                'messages' => [],
+            ];
 
+            if (is_array($translations) && 0 !== sizeof($translations)) {
                 $javascript[$locale] = [];
 
-                foreach ($translations as $k => $translation)
-                {
-                    $dump[strtolower($k)] = $translation['translation'];
+                foreach ($translations as $k => $translation) {
+                    $catalogues['messages'][strtolower($k)] = $translation['translation'];
 
-                    if (isset($translation['tags']) && sizeof($translation['tags']))
-                    {
-                        foreach ($translation['tags'] as $tag)
-                        {
-                            if ($tag == 'javascript')
-                            {
+                    if (isset($translation['tags']) && sizeof($translation['tags'])) {
+                        foreach ($translation['tags'] as $tag) {
+                            if ($tag === 'javascript') {
                                 $javascript[$locale][strtolower($k)] = $translation['translation'];
+                                continue;
                             }
+
+                            $catalogues[$tag][strtolower($k)] = $translation['translation'];
                         }
                     }
                 }
 
-                $file = realpath($this->langley->getTranslationsFullPath() );
+                foreach ($catalogues as $catalogueName => $catalogue) {
+                    file_put_contents(
+                        sprintf(
+                            '%s/%s.%s.php',
+                            $this->langley->getTranslationsFullPath(),
+                            $catalogueName,
+                            $locale
+                        ), "<?php\n\nreturn " . var_export($catalogue, 1) . ';');
+                }
 
-                if (file_put_contents($file . '/messages.' . $locale . '.php', "<?php\n\nreturn " . var_export($dump, 1) . ';'))
-                {
-                    $output->writeln('<info> ✔ ' . $file . '</info>');
-                }
-                else
-                {
-                    $output->writeln('<error> ✘ ' . $file . ' failed</error>');
-                }
+                $output->writeln(sprintf('Saving'));
             }
-            else
-            {
+            else {
                 $output->writeln('Nothing to save !');
             }
         }
