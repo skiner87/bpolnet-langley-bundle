@@ -9,6 +9,7 @@
 namespace BpolNet\Bundle\LangleyBundle\Command;
 
 use BpolNet\Bundle\LangleyBundle\Service\Langley;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +19,8 @@ class LangleyDumpCommand extends Command
 {
 
     const ARGUMENT_LOCALES = 'locales';
+
+    protected static $defaultName = 'langley:dump';
 
     /**
      * @var Langley
@@ -38,7 +41,6 @@ class LangleyDumpCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('langley:dump')
             ->addArgument(self::ARGUMENT_LOCALES, InputArgument::REQUIRED, 'Locales which you are using in your application in ISO 639-1 format (2 chars). Ex: en,fr')
         ;
     }
@@ -54,7 +56,14 @@ class LangleyDumpCommand extends Command
 
         foreach ($locales as $locale) {
             $output->writeln(sprintf('Fetching locale %s', $locale));
-            $translations = $this->langley->fetchTranslations($locale);
+
+            try {
+                $translations = $this->langley->fetchTranslations($locale);
+            }
+            catch (Exception $e) {
+                $output->writeln(sprintf('Nothing to save. Check if %s locale is available.', $locale));
+                continue;
+            }
 
             $catalogues = [
                 'messages' => [],

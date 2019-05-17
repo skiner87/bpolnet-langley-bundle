@@ -8,7 +8,6 @@
 
 namespace BpolNet\Bundle\LangleyBundle\Service;
 
-
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class Langley
@@ -71,13 +70,11 @@ class Langley
         return $this->config['variableJsObject'];
     }
 
-    /**
-     * @param string $locale
-     * @return array
-     */
-    public function fetchTranslations(string $locale)
+    public function fetchTranslations(string $locale): array
     {
-        $translations = json_decode(file_get_contents(self::BASE_URL . 'export/' . $this->getSecretKey() . '/' . $locale), true);
+        $content = file_get_contents(self::BASE_URL . 'export/' . $this->getSecretKey() . '/' . $locale);
+
+        $translations = json_decode($content, true);
 
         return $translations;
     }
