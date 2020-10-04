@@ -48,7 +48,7 @@ class LangleyDumpCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locales = explode(',', $input->getArgument(self::ARGUMENT_LOCALES));
 
@@ -107,6 +107,8 @@ class LangleyDumpCommand extends Command
         $this->saveJsTranslations($output, $javascript);
 
         $output->writeln('Im done');
+
+        return 0;
     }
 
     /**
