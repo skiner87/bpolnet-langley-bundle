@@ -24,11 +24,9 @@ class LangleyConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('langley');
+        $treeBuilder = new TreeBuilder('langley');
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        $rootNode
+        $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('secret')
                     ->isRequired()
@@ -38,10 +36,8 @@ class LangleyConfiguration implements ConfigurationInterface
                     ->defaultValue('%kernel.root_dir%/translations')
                     ->validate()
                     ->ifString()
-                        ->then(function($value)
-                        {
-                            if (!is_dir($value))
-                            {
+                        ->then(function($value) {
+                            if (!is_dir($value)) {
                                 throw new LangleyException(sprintf('Translations directory is not readable (%s)', $value));
                             }
 
@@ -54,10 +50,8 @@ class LangleyConfiguration implements ConfigurationInterface
                     ->defaultValue('%kernel.root_dir%/assets/js')
                     ->validate()
                     ->ifString()
-                        ->then(function($value)
-                        {
-                            if (!is_dir($value))
-                            {
+                        ->then(function($value) {
+                            if (!is_dir($value)) {
                                 throw new LangleyException(sprintf('Translations directory is not readable (%s)', $value));
                             }
 
@@ -78,4 +72,5 @@ class LangleyConfiguration implements ConfigurationInterface
 
         return $treeBuilder;
     }
+
 }
