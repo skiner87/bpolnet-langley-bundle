@@ -1,70 +1,43 @@
 <?php
 
-/**
- * This file is part of the BpolNet company package.
- *
- * Marek Krokwa <marek.krokwa@bpol.net>
- */
+declare(strict_types=1);
 
 namespace BpolNet\Bundle\LangleyBundle\Service;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-
+/**
+ * Marek Krokwa <marek.krokwa@gmail.com>
+ */
 class Langley
 {
-    const BASE_URL = 'http://langley.pl/';
+    const BASE_URL = 'https://langley.pl/';
 
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    public function __construct(array $config, KernelInterface $kernel)
+    public function __construct(array $config)
     {
         $this->config = $config;
-        $this->kernel = $kernel;
     }
 
-    /**
-     * @return string
-     */
     private function getSecretKey() : string
     {
         return $this->config['secret'];
     }
 
-    /**
-     * @return string
-     */
     public function getTranslationsFullPath() : string
     {
         return $this->config['translationsPath'];
     }
 
-    /**
-     * @return string
-     */
     public function getTranslationsFullJsPath() : string
     {
         return $this->config['translationsJsPath'];
     }
 
-    /**
-     * @return string
-     */
     public function getTranslationsJsFile() : string
     {
         return $this->config['translationsJsFile'];
     }
 
-    /**
-     * @return string
-     */
     public function getVariableJsObjectName() : string
     {
         return $this->config['variableJsObject'];
@@ -74,8 +47,6 @@ class Langley
     {
         $content = file_get_contents(self::BASE_URL . 'export/' . $this->getSecretKey() . '/' . $locale);
 
-        $translations = json_decode($content, true);
-
-        return $translations;
+        return json_decode($content, true);
     }
 }

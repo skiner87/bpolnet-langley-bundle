@@ -1,10 +1,6 @@
 <?php
 
-/**
- * This file is part of the BpolNet company package.
- *
- * Marek Krokwa <marek.krokwa@bpol.net>
- */
+declare(strict_types=1);
 
 namespace BpolNet\Bundle\LangleyBundle\Command;
 
@@ -15,6 +11,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Marek Krokwa <marek.krokwa@gmail.com>
+ */
 class LangleyDumpCommand extends Command
 {
 
@@ -22,14 +21,8 @@ class LangleyDumpCommand extends Command
 
     protected static $defaultName = 'langley:dump';
 
-    /**
-     * @var Langley
-     */
-    private $langley;
+    private Langley $langley;
 
-    /**
-     * @param Langley $langley
-     */
     public function __construct(Langley $langley)
     {
         $this->langley = $langley;
@@ -37,8 +30,7 @@ class LangleyDumpCommand extends Command
         parent::__construct();
     }
 
-
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument(self::ARGUMENT_LOCALES, InputArgument::REQUIRED, 'Locales which you are using in your application in ISO 639-1 format (2 chars). Ex: en,fr')
@@ -60,7 +52,7 @@ class LangleyDumpCommand extends Command
             try {
                 $translations = $this->langley->fetchTranslations($locale);
             }
-            catch (Exception $e) {
+            catch (Exception) {
                 $output->writeln(sprintf('Nothing to save. Check if %s locale is available.', $locale));
                 continue;
             }
@@ -94,10 +86,10 @@ class LangleyDumpCommand extends Command
                             $this->langley->getTranslationsFullPath(),
                             $catalogueName,
                             $locale
-                        ), "<?php\n\nreturn " . var_export($catalogue, 1) . ';');
+                        ), "<?php\n\nreturn " . var_export($catalogue, true) . ';');
                 }
 
-                $output->writeln(sprintf('Saving'));
+                $output->writeln('Saving');
             }
             else {
                 $output->writeln('Nothing to save !');
@@ -111,27 +103,20 @@ class LangleyDumpCommand extends Command
         return 0;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param array $javascript
-     */
-    private function saveJsTranslations(OutputInterface $output, array $javascript)
+    private function saveJsTranslations(OutputInterface $output, array $javascript): void
     {
         $jsTranslations = 'var ' . $this->langley->getVariableJsObjectName() . ' = {};';
 
-        foreach ($javascript as $locale => $items)
-        {
+        foreach ($javascript as $locale => $items) {
             $jsTranslations .= $this->langley->getVariableJsObjectName() . '.' . strtolower($locale) . '=' . json_encode($items, JSON_UNESCAPED_UNICODE) . ';';
         }
 
         $filePath = realpath($this->langley->getTranslationsFullJsPath()) . '/' . $this->langley->getTranslationsJsFile();
 
-        if (file_put_contents($filePath, $jsTranslations))
-        {
+        if (file_put_contents($filePath, $jsTranslations)) {
             $output->writeln('<info> ✔ ' . $filePath . '</info>');
         }
-        else
-        {
+        else {
             $output->writeln('<error> ✘ ' . $filePath . ' failed</error>');
         }
     }

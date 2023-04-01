@@ -1,14 +1,15 @@
 <?php
 
-/**
- * This file is part of the BpolNet company package.
- *
- * Marek Krokwa <marek.krokwa@bpol.net>
- */
+declare(strict_types=1);
 
 namespace BpolNet\Bundle\LangleyBundle\Exception;
 
-class LangleyException extends \Exception
+use Exception;
+
+/**
+ * Marek Krokwa <marek.krokwa@gmail.com>
+ */
+class LangleyException extends Exception
 {
 
 }

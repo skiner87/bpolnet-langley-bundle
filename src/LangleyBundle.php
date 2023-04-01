@@ -1,24 +1,21 @@
 <?php
 
-/**
- * This file is part of the BpolNet company package.
- *
- * Marek Krokwa <marek.krokwa@bpol.net>
- */
+declare(strict_types=1);
 
 namespace BpolNet\Bundle\LangleyBundle;
 
 use BpolNet\Bundle\LangleyBundle\DependencyInjection\CompilerPass\CompilerPass;
 use BpolNet\Bundle\LangleyBundle\DependencyInjection\LangleyExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Marek Krokwa <marek.krokwa@gmail.com>
+ */
 class LangleyBundle extends Bundle
 {
 
-    /**
-     * @param ContainerBuilder $container
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -26,10 +23,9 @@ class LangleyBundle extends Bundle
         $container->addCompilerPass(new CompilerPass);
     }
 
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new LangleyExtension();
     }
-
 
 }

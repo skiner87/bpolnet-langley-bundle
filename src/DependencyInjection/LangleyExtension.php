@@ -1,10 +1,6 @@
 <?php
 
-/**
- * This file is part of the BpolNet company package.
- *
- * Marek Krokwa <marek.krokwa@bpol.net>
- */
+declare(strict_types=1);
 
 namespace BpolNet\Bundle\LangleyBundle\DependencyInjection;
 
@@ -14,9 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension as SymfonyExtension;
 
 /**
- * This is the class that loads and manages your bundle configuration.
- *
- * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
+ * Marek Krokwa <marek.krokwa@gmail.com>
  */
 class LangleyExtension extends SymfonyExtension
 {
