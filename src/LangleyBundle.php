@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class LangleyBundle extends Bundle
 {
-
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -27,5 +26,4 @@ class LangleyBundle extends Bundle
     {
         return new LangleyExtension();
     }
-
 }
