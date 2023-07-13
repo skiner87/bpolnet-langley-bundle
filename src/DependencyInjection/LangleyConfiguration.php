@@ -27,7 +27,7 @@ class LangleyConfiguration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('translationsPath')
                     ->isRequired()
-                    ->defaultValue('%kernel.root_dir%/translations')
+                    ->defaultValue('%kernel.project_dir%/translations')
                     ->validate()
                     ->ifString()
                         ->then(function($value) {
@@ -41,7 +41,7 @@ class LangleyConfiguration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('translationsJsPath')
                     ->isRequired()
-                    ->defaultValue('%kernel.root_dir%/assets/js')
+                    ->defaultValue('%kernel.project_dir%/assets/js')
                     ->validate()
                     ->ifString()
                         ->then(function($value) {
