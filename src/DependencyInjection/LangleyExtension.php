@@ -17,7 +17,7 @@ class LangleyExtension extends SymfonyExtension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new LangleyConfiguration();
         $config = $this->processConfiguration($configuration, $configs);

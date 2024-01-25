@@ -61,7 +61,7 @@ class LangleyDumpCommand extends Command
                 'messages' => [],
             ];
 
-            if (is_array($translations) && 0 !== sizeof($translations)) {
+            if (0 !== sizeof($translations)) {
                 $javascript[$locale] = [];
 
                 foreach ($translations as $k => $translation) {
