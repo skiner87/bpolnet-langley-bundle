@@ -74,7 +74,7 @@ class LangleyDumpCommand extends Command
                                 continue;
                             }
                             elseif ($tag === 'intl-icu') {
-                                $javascript[$locale][strtolower($k)] = $translation['translation'];
+                                $catalogues['intl-icu'][strtolower($k)] = $translation['translation'];
                                 continue;
                             }
 
