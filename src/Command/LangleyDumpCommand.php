@@ -80,13 +80,23 @@ class LangleyDumpCommand extends Command
                 }
 
                 foreach ($catalogues as $catalogueName => $catalogue) {
-                    file_put_contents(
-                        sprintf(
+                    if ($catalogueName === 'intl-icu') {
+                        $filepath = sprintf(
+                            '%s/messages+intl-icu.%s.php',
+                            $this->langley->getTranslationsFullPath(),
+                            $locale
+                        );
+                    }
+                    else {
+                        $filepath = sprintf(
                             '%s/%s.%s.php',
                             $this->langley->getTranslationsFullPath(),
                             $catalogueName,
                             $locale
-                        ), "<?php\n\nreturn " . var_export($catalogue, true) . ';');
+                        );
+                    }
+
+                    file_put_contents($filepath, "<?php\n\nreturn " . var_export($catalogue, true) . ';');
                 }
 
                 $output->writeln('Saving');
