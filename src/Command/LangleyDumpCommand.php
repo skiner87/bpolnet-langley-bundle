@@ -65,21 +65,18 @@ class LangleyDumpCommand extends Command
                 $javascript[$locale] = [];
 
                 foreach ($translations as $k => $translation) {
-                    $catalogues['messages'][strtolower($k)] = $translation['translation'];
+                    if (!isset($translation['tags']) || 0 === sizeof($translation['tags'])) {
+                        $catalogues['messages'][strtolower($k)] = $translation['translation'];
+                        continue;
+                    }
 
-                    if (isset($translation['tags']) && sizeof($translation['tags'])) {
-                        foreach ($translation['tags'] as $tag) {
-                            if ($tag === 'javascript') {
-                                $javascript[$locale][strtolower($k)] = $translation['translation'];
-                                continue;
-                            }
-                            elseif ($tag === 'intl-icu') {
-                                $catalogues['intl-icu'][strtolower($k)] = $translation['translation'];
-                                continue;
-                            }
-
-                            $catalogues['messages'][strtolower($k)] = $translation['translation'];
+                    foreach ($translation['tags'] as $tag) {
+                        if ($tag === 'intl-icu') {
+                            $catalogues['intl-icu'][strtolower($k)] = $translation['translation'];
+                            continue;
                         }
+
+                        $catalogues['messages'][strtolower($k)] = $translation['translation'];
                     }
                 }
 
