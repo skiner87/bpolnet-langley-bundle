@@ -76,7 +76,7 @@ class LangleyDumpCommand extends Command
                             continue;
                         }
 
-                        $catalogues['messages'][strtolower($k)] = $translation['translation'];
+                        $catalogues[$tag][strtolower($k)] = $translation['translation'];
                     }
                 }
 
