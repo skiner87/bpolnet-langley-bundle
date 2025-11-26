@@ -65,10 +65,7 @@ class LangleyDumpCommand extends Command
                 $javascript[$locale] = [];
 
                 foreach ($translations as $k => $translation) {
-                    if (!isset($translation['tags']) || 0 === sizeof($translation['tags'])) {
-                        $catalogues['messages'][strtolower($k)] = $translation['translation'];
-                        continue;
-                    }
+                    $catalogues['messages'][strtolower($k)] = $translation['translation'];
 
                     foreach ($translation['tags'] as $tag) {
                         if ($tag === 'intl-icu') {
