@@ -45,6 +45,7 @@ class Langley
 
     public function fetchTranslations(string $locale): array
     {
+        ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 6.0)');
         $content = file_get_contents(self::BASE_URL . 'export/' . $this->getSecretKey() . '/' . $locale);
 
         return json_decode($content, true);
