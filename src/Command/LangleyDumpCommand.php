@@ -68,12 +68,12 @@ class LangleyDumpCommand extends Command
                     $catalogues['messages'][strtolower($k)] = $translation['translation'];
 
                     foreach ($translation['tags'] as $tag) {
-                        if ($tag === 'intl-icu') {
+                        if ($tag['name'] === 'intl-icu') {
                             $catalogues['intl-icu'][strtolower($k)] = $translation['translation'];
                             continue;
                         }
 
-                        $catalogues[$tag][strtolower($k)] = $translation['translation'];
+                        $catalogues[$tag['name']][strtolower($k)] = $translation['translation'];
                     }
                 }
 
